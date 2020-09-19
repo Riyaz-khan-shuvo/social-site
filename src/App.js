@@ -1,21 +1,31 @@
-import React, { useState } from 'react';
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
 import './App.css';
-import FakeData from './FakeData/FakeData';
-import Name from './Components/Name/Name';
+import Social from './Components/Social/Social';
 
 function App() {
-  // const first10 = FakeData.slice(0 , 10);
-  // console.log(first10);
+  const [users , setUsers] = useState([]);
+  const [team , setTeam] = useState([]);
+  useEffect(()=>{
+    fetch('https://randomuser.me/api/?results=45')
+    .then(res =>res.json())
+    .then(data =>setUsers(data.results))
+  },[]);
 
- 
+  const addMember = (name) => {
+    console.log('mamber added' , name);
+    setTeam([...team , name]);
+  }
+
   return (
     <div className="App">
-    <Name></Name>
-      
+      <h1 className='text-center'>Team Builder</h1>
+      {
+        team.map(te => <li> {te} </li>)
+      }
+      {
+        users.map(info=><Social information={info} addMember={addMember}></Social>)
+      }
     </div>
   );
 }
-
-
 export default App;
